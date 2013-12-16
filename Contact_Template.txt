@@ -1,0 +1,26 @@
+<script>
+	$(document).ready(function(){
+		SetTweetsDesign();
+	});
+	function SetTweetsDesign()
+	{
+		var htmlTimeStamp = '';
+		var link = '';
+		$('.contact_right .summary-item').each(function(){
+
+			htmlTimeStamp = $(this).find('.timestamp').get(0).outerHTML;
+			$(this).find('.timestamp').remove();
+			$(this).find('.summary-content').prepend(htmlTimeStamp);
+			link = $(this).find('.summary-title a').attr('href');
+			
+			$(this).find('.summary-excerpt span').text(function(index, text) {
+				if(text.length>136)
+				{
+        			return text.substr(0, 135);
+				}
+			});
+			
+			$(this).find('.summary-excerpt span').append('...<a href="'+ link +'" id="read_more">Read More</a>');
+		});
+	}
+</script>

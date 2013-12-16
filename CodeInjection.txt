@@ -1,0 +1,101 @@
+<script type="text/javascript" src="/assets/js/jquery-1.8.2.min.js"></script>
+
+<script>
+   $(document).ready(function () {
+		  AddLinksToFolderNav();
+		  RemoveLastSlashFromTopNavUrl();
+          MouseOverMainMenu();
+  		  LoadMobileMenu();
+		  RemoveMinusFromQuotes();
+  	});
+	function AddLinksToFolderNav()
+	{
+		$( "#main-navigation ul.folder-parent li > a:contains('Innovation')" ).attr('href','/innovation-home/');
+		$( "#main-navigation ul.folder-parent li > a:contains('Products')" ).attr('href','/product-homge-page/');
+		$( "#main-navigation ul.folder-parent li > a:contains('Gallery')" ).attr('href','/gallery-home/');
+	}
+	function RemoveLastSlashFromTopNavUrl()
+	{
+      
+		$("#main-navigation a").each(function(){
+			var originalLink=$(this).attr('href');
+			var newLink='';
+			newLink = originalLink.substring(0,originalLink.length-1);
+			$(this).attr('href',newLink);
+		});
+	}
+
+   function MouseOverMainMenu()
+   {
+     $('.div_MainNavigation_Web ul.folder-parent li a').each(function(){
+     	$(this).mouseenter(function() {
+  			$(this).addClass('MenuHover');	
+		});
+       $(this).mouseleave(function() {
+  			$(this).removeClass('MenuHover');	
+		});
+       $(this).parent().find('ul').mouseenter(function() {
+  			$(this).parent().find('a:first').addClass('MenuHover');	
+		});
+       $(this).parent().find('ul').mouseleave(function() {
+         $(this).parent().find('a:first').removeClass('MenuHover');	
+		});
+     });	
+     
+   }
+   function LoadMobileMenu() {
+     var link = '';
+     var liHtml = '';
+     var html_Menu = $.trim($("#main-navigation .folder-parent").html());
+     
+     $('.div_MainNavigation_MobileIpad ul').html(html_Menu);
+     $('.div_MainNavigation_MobileIpad #ul_Mobile_Menu li').each(function(){
+     	if($(this).find('.folder-child').length > 0)
+        {
+          if($(this).parent().hasClass('.folder-child')==false)
+          {
+            $(this).children('a').addClass('Close');
+            $(this).children('a').attr('href','javascript:void(1);');
+            $(this).children('a').bind( "click", function() {
+                  $(this).parent().find('.folder-child').toggle('slow');
+                  
+            });
+          }
+        }
+     });  
+     
+   }
+  
+  		function ShowSubMenu_Menu()
+		{
+          $('.div_MainNavigation_MobileIpad #folder-child').toggleClass('show');
+		} 
+   		function ShowHideMobileMenu()
+		{
+			$('.div_MainNavigation_MobileIpad #ul_Mobile_Menu').slideToggle('slow');
+		}
+  function RemoveMinusFromQuotes()
+  {
+		var htmlQuote ='';
+	  $( "figure" ).each(function( index ) {
+			htmlQuote = $(this).find("blockquote").get(0).outerHTML;
+			$(this).find("blockquote").remove();
+			$(this).append(htmlQuote);
+	  });
+
+	  $( "figcaption" ).each(function( index ) {
+		  $(this).text($(this).text().replace('—',''));
+
+		  $(this).bind( "click", function() {
+  				$(this).parent().toggleClass('open');
+				$(this).parent().find('blockquote').slideToggle('slow');
+		  });
+		  
+	  });
+	  $( "blockquote" ).each(function( index ) {
+		  $(this).hide();
+		  $(this).html($(this).html().replace('<span>“</span>','').replace('<span>”</span>',''));
+		  
+	  });
+  }
+</script>

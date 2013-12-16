@@ -1,0 +1,231 @@
+<script type="text/javascript" language="javascript" src="/assets/js/strip-slider.js"></script>
+<script>
+  $(document).ready(function(){
+    SelectLeftMenu();
+	CreateSliderFOrAll();
+    AddClearClass();
+    SetResolutionRelatedElements();
+	CreateLeftMenuDropDown();
+   });
+   
+   $( window ).resize(function() {
+		SetResolutionRelatedElements();
+   });
+
+   function CreateLeftMenuDropDown()
+   {
+		var htmlDropDown = '<select onchange="jumpToPage(this)">';
+		var link = '';
+		var Selected = '';
+		
+		$( ".products_left ul li").each(function(){
+			if($(this).find('a.active').length>0)
+			{
+				Selected = 'selected="selected"'
+			}
+			else
+			{
+				Selected = ''
+			}
+			link = $(this).find('a').attr('href');
+			htmlDropDown = htmlDropDown + '<option value="'+ link +'" '+ Selected +'>'+ $(this).html() +'</option>';
+		});
+		
+		htmlDropDown = htmlDropDown + '</select>';
+
+		$('.left_Menu_DropDown').html(htmlDropDown);
+   }
+   function jumpToPage(newLoc)
+   {
+	   var newPage = newLoc.options[newLoc.selectedIndex].value
+		if (newPage != "") {
+			window.location = newPage
+		}
+   }
+   function SetResolutionRelatedElements()
+   {
+		MoveFeaturesUnderFirstGallary()
+		setDownloadIconsWidth();
+   }
+   function MoveFeaturesUnderFirstGallary()
+   {
+		
+		if($( document ).width() <= 800)
+		{
+			var htmlFeatureSection = $('.body_products_right').html();
+			$('.body_products_right').html('');
+			$( ".gallery-block" ).first().parent().append('<div class="mobile_body_products_right">' + htmlFeatureSection +'</div>');
+		}
+		else
+		{
+			if($('.mobile_body_products_right').length >0 || $('.mobile_body_products_right').html() !='')
+			{
+				var htmlFeatureSection = $('.mobile_body_products_right').html();
+				$('.mobile_body_products_right').remove();
+				$( ".body_products_right" ).html(htmlFeatureSection);
+			}
+		}
+
+		var pageName = String(window.location.pathname);
+		if(pageName.indexOf('/ventless-fireplace/')<0)
+		{
+			$( ".body_products_right" ).hide();
+			$('.mobile_body_products_right').hide();
+			$('.body_products_left').css('width','97%');
+		}
+
+
+   }
+
+   function setDownloadIconsWidth()
+   {
+		$('.body_products_right .image-block').parent().css('width','50%');
+		$('.body_products_right .image-block').parent().css('float','left');
+   }
+   function SelectLeftMenu()
+   {
+		var Title = '';
+		var pageName = String(window.location.pathname);
+		pageName = pageName.substring(pageName.lastIndexOf("/") + 1);
+		switch (pageName)
+		{
+			case 'widescreen':
+			  Title="Widescreen";
+			  break;
+			case 'panoramic':
+			  Title="Panoramic";
+			  break;
+			case 'tall':
+			  Title="Tall";
+			  break;
+			case 'linear':
+			  Title="Linear";
+			  break;
+			case 'square':
+			  Title="Square";
+			  break;
+			case 'small':
+			  Title="Small";
+			  break;
+			case '3-sided':
+			  Title="3-Sided";
+			  break;
+			case '2-sided':
+			  Title="2-Sided";
+			  break;
+
+			case 'custom-ventless-fireplace':
+			  Title="Custom";
+			  break;
+			case 'see-all-ventless':
+			  Title="SEE ALL";
+			  break;
+			case 'new-products':
+			  Title="New Products";
+			  break;
+			case 'other-products':
+			  Title="Other Products";
+			  break;
+			case 'interior-finish-options':
+			  Title="Interior Finishes";
+			  break;
+			case 'decorative-elements':
+			  Title="Decorative Elements";
+			  break;
+			case 'alcohol-gel-fuel-cartridges':
+			  Title="Alcohol Gel Fuel Cartridges";
+			  break;
+			case 'specify':
+			  Title="How to Specify/Order";
+			  break;
+			  
+		}
+		
+		$( ".products_left ul li a:contains('"+ Title +"')" ).addClass('active');
+   }
+  function CreateSliderFOrAll()
+  {
+	//First Gallary is normal
+	$( ".gallery-block" ).first().show();
+
+	//Took Share button from bottom to first Gallary
+	var htmlSharePage = $('.sharePage').get(0).outerHTML;
+	$('.sharePage').remove();
+	$( ".gallery-block" ).first().parent().prepend(htmlSharePage);
+	$('.sharePage').show();
+
+    $('.gallery-block').each(function(){
+      
+      if($(this).is(':visible')==false)	
+      {
+      	CreateProjectSlider($(this).attr('id'));
+      }
+     });
+  }
+   function LoadProjectSlider(idSlider)
+   {
+     
+   $('#ulStripSlider_'+ idSlider).carouFredSel({
+                items: 5,
+                duration: 10000,
+                scroll: { items: 1, duration: 1000 },
+                auto: false,
+                prev: '#project_prev_'+ idSlider,
+                next: '#project_next_'+ idSlider,
+                mousewheel: true,
+                swipe: {
+                    onMouse: true,
+                    onTouch: true
+                }
+            });
+     
+   }
+   function CreateProjectSlider(idSlider)
+   {
+     var sliderHtml = '<div class="list_carousel">'+
+        '<ul id="ulStripSlider_'+ idSlider +'">';
+        
+     
+     //$(idSlider).parent().append(sliderHtml);
+     //
+         
+     
+     var ImageUrl,ImageHeading,ImageText, ImageLink;
+     var HtmlLi='';
+     $('#' + idSlider +' .slide').each(function(){
+       ImageUrl = $(this).find('img').attr('data-src');
+       ImageHeading = $(this).find('.meta-title').text();
+       ImageText = $(this).find('.meta-description').text();
+       ImageLink = $(this).attr('data-click-through-url');
+       
+       if(ImageLink!="")
+       {
+         HtmlLi = HtmlLi + '<li><a href="'+ ImageLink +'" target="_blank"><img src="'+ ImageUrl +'" alt="'+ ImageHeading +'" /></a><span>'+ ImageHeading +'</span><p>'+ ImageText +'</p></li>';
+       }
+       else
+       {
+     		HtmlLi = HtmlLi + '<li><img src="'+ ImageUrl +'" alt="'+ ImageHeading +'" /><span>'+ ImageHeading +'</span><p>'+ ImageText +'</p></li>';  
+       }
+     
+     });
+     //$('#ulStripSlider').html(HtmlLi);
+     
+    sliderHtml =sliderHtml + HtmlLi + '</ul>'+
+        '<div class="clearfix">'+
+        '</div>'+
+        '<a id="project_prev_'+ idSlider +'" class="project_prev" href="#"></a><a id="project_next_'+ idSlider +'" class="project_next" href="#"></a>'+        
+    '</div>';
+     
+     $( sliderHtml ).insertAfter('#' + idSlider);
+     $('#' + idSlider).remove();
+     LoadProjectSlider(idSlider);
+   }
+  
+  function AddClearClass()
+{
+  $('.image-caption').each(function(){
+  	$('<div class="clr"></div>').insertAfter($(this));
+  });
+}
+
+</script>

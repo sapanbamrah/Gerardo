@@ -1,0 +1,129 @@
+<script>
+	$(document).ready(function(){
+		LoadScrollEvents();
+		SelectMenuOnScroll();
+		SetTweetsDesign();
+		if ($(window).width() > 1024) {
+                $(window).scroll(moveFloatMenu);
+                moveFloatMenu();
+        }
+	});
+    
+	function moveFloatMenu() 
+	{
+
+        var menuOffset = 0;
+        if ($(this).scrollTop() > 250) {
+            menuOffset = $(this).scrollTop() - 255 + "px";
+            //$('#safety_Wrapper').addClass('floating');
+                    
+        }
+        else {
+            menuOffset = "0px";
+            //$('#safety_Wrapper').removeClass('floating');
+                   
+        }
+
+        $('#nav_left_safety').animate({ top: menuOffset }, { duration: 700, queue: false });
+            
+	}
+	function SetTweetsDesign()
+	{
+		var htmlTimeStamp = '';
+		var link = '';
+		$('.contact_right .summary-item').each(function(){
+
+			htmlTimeStamp = $(this).find('.timestamp').get(0).outerHTML;
+			$(this).find('.timestamp').remove();
+			$(this).find('.summary-content').prepend(htmlTimeStamp);
+			link = $(this).find('.summary-title a').attr('href');
+			
+			$(this).find('.summary-excerpt span').text(function(index, text) {
+				if(text.length>136)
+				{
+        			return text.substr(0, 135);
+				}
+			});
+			
+			$(this).find('.summary-excerpt span').append('...<a href="'+ link +'" id="read_more">Read More</a>');
+		});
+	}
+	
+  
+  function LoadScrollEvents()
+  {
+		$('#a_NYFD').click(function() {
+            ScrollTOElement('block-181459fff8bb631a80d6');
+          	ResetActiveLinks();
+        });
+		$('#a_NYDOB').click(function() {
+            ScrollTOElement('block-e96d127876b7cf0bbd95');
+          	ResetActiveLinks();
+        });
+		$('#a_Endorsements').click(function() {
+            ScrollTOElement('block-431fe883d95ea813c8d4');
+          	ResetActiveLinks();
+        });
+		$('#a_Cartridge_Evaluation').click(function() {
+            ScrollTOElement('block-88a8ea097500eb2f50e8');
+          	ResetActiveLinks();
+        });
+		$('#a_Safe_Use').click(function() {
+            ScrollTOElement('block-07aa5fad21613c5da1b3');
+          	ResetActiveLinks();
+        });
+  }
+ function ScrollTOElement(elementID) 
+ {
+   //ShowHideMobileMenu();
+   $('html, body').animate({ scrollTop: $('#'+ elementID).offset().top + 50 }, 1000); 
+ }
+
+  	 function SelectMenuOnScroll() {
+    		$window = $(window);
+			$window.scroll(function() {
+            
+			var distance1 = $('#block-181459fff8bb631a80d6').offset().top-271;
+			var distance2 = $('#block-e96d127876b7cf0bbd95').offset().top-271;
+			var distance3 = $('#block-431fe883d95ea813c8d4').offset().top-271;
+			var distance4 = $('#block-88a8ea097500eb2f50e8').offset().top-271;
+			var distance5 = $('#block-07aa5fad21613c5da1b3').offset().top-271;
+
+                if ( $window.scrollTop() < distance1 )
+                {
+                  ResetActiveLinks();
+                }
+				if ( $window.scrollTop() >= distance1 && $window.scrollTop() < distance2 )
+                {
+                  ResetActiveLinks();
+				  $('#a_NYFD').addClass('active');
+                }
+              if ( $window.scrollTop() >= distance2 && $window.scrollTop() < distance3 )
+                {
+                  ResetActiveLinks();
+				  $('#a_NYDOB').addClass('active');
+                }
+              if ( $window.scrollTop() >= distance3 && $window.scrollTop() < distance4 )
+                {
+                  ResetActiveLinks();
+				  $('#a_Endorsements').addClass('active');
+                }
+              if ( $window.scrollTop() >= distance4 && $window.scrollTop() < distance5)
+                {
+                  ResetActiveLinks();
+				  $('#a_Cartridge_Evaluation').addClass('active');
+                }
+			  if ( $window.scrollTop() >= distance5)
+                {
+                  ResetActiveLinks();
+				  $('#a_Safe_Use').addClass('active');
+                }
+            });
+         }
+  function ResetActiveLinks()
+  {
+   $('#nav_left_safety a').each(function() {
+     $(this).removeClass('active');
+   });
+  }
+</script>

@@ -1,0 +1,26 @@
+<script>
+	$(document).ready(function(){
+		SelectLeftMenu();
+	});
+	
+	function SelectLeftMenu()
+   {
+		var Title = '';
+		var pageName = String(window.location.pathname);
+		pageName = pageName.substring(pageName.lastIndexOf("/") + 1);
+		switch (pageName)
+		{
+			case 'press':
+			  Title="Press";
+			  break;
+			case 'blog':
+			  Title="Blog";
+			  break;
+			case 'events':
+			  Title="Event";
+			  break;
+		}
+		
+		$( ".blogs_left ul li a:contains('"+ Title +"')" ).addClass('active');
+   }
+</script>

@@ -1,0 +1,50 @@
+<script>
+	$(document).ready(function(){
+		SelectLeftMenu();
+		SetTweetsDesign();
+	});
+	function SetTweetsDesign()
+	{
+		var htmlTimeStamp = '';
+		var link = '';
+		$('.contact_right .summary-item').each(function(){
+
+			htmlTimeStamp = $(this).find('.timestamp').get(0).outerHTML;
+			$(this).find('.timestamp').remove();
+			$(this).find('.summary-content').prepend(htmlTimeStamp);
+			link = $(this).find('.summary-title a').attr('href');
+			
+			$(this).find('.summary-excerpt span').text(function(index, text) {
+				if(text.length>136)
+				{
+        			return text.substr(0, 135);
+				}
+			});
+			
+			$(this).find('.summary-excerpt span').append('...<a href="'+ link +'" id="read_more">Read More</a>');
+		});
+	}
+	function SelectLeftMenu()
+   {
+		var Title = '';
+		var pageName = String(window.location.pathname);
+		pageName = pageName.substring(pageName.lastIndexOf("/") + 1);
+		switch (pageName)
+		{
+			case 'general-information':
+			  Title="Design History";
+			  break;
+			case 'fireplace-features':
+			  Title="Fireplace Features";
+			  break;
+			case 'testimonials':
+			  Title="Testimonials";
+			  break;
+			case 'faq':
+			  Title="FAQ";
+			  break;
+		}
+		
+		$( ".features_left ul li a:contains('"+ Title +"')" ).addClass('active');
+   }
+</script>
